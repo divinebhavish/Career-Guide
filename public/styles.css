@@ -3483,6 +3483,42 @@ html {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* ML Results Styling */
+.ml-results {
+    color: #000000 !important;
+}
+
+.ml-results * {
+    color: #000000 !important;
+}
+
+.ml-results h2,
+.ml-results h3,
+.ml-results h4,
+.ml-results h5,
+.ml-results p,
+.ml-results span,
+.ml-results div,
+.ml-results li {
+    color: #000000 !important;
+}
+
+.main-recommendation h2 {
+    color: #000000 !important;
+}
+
+.course-description p {
+    color: #000000 !important;
+}
+
+.career-paths-section h3 {
+    color: #000000 !important;
+}
+
+.next-steps-section h3 {
+    color: #000000 !important;
+}
+
 .results-header {
     text-align: center;
     margin-bottom: 3rem;

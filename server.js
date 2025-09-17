@@ -9,7 +9,7 @@ require('dotenv').config();
 const OpenAI = require("openai");
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 4000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Set EJS as view engine
@@ -270,6 +270,8 @@ const getRecentActivities = async (userId) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+
 
 // Middleware for browser routes (checks token from localStorage via cookie or redirects to login)
 const authenticateBrowser = (req, res, next) => {
@@ -2187,6 +2189,16 @@ const initializeBlogs = async () => {
         console.log('Blog initialization skipped - DB not available');
     }
 };
+
+// Handle all other routes for SPA (must be last)
+app.get('*', (req, res) => {
+    // If it's an API route, let it pass through
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({ message: 'API endpoint not found' });
+    }
+    // For all other routes, serve the main page
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Initialize all data
 app.listen(PORT, async () => {
