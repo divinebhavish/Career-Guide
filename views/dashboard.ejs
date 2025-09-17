@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Career Guidance</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+        .sidebar {
+            width: 250px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px 0;
+        }
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3498db;
+        }
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .nav-item:hover {
+            background: #34495e;
+        }
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .stat-card h3 {
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+        .recent-activity {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            .main-content {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h3><i class="fas fa-graduation-cap"></i> Career Guide</h3>
+            <div class="nav-item" onclick="location.href='/dashboard'">
+                <i class="fas fa-home"></i> Dashboard
+            </div>
+            <div class="nav-item" onclick="navigateWithToken('/profile')">
+                <i class="fas fa-user"></i> Profile
+            </div>
+            <div class="nav-item" onclick="location.href='/'">
+                <i class="fas fa-briefcase"></i> Careers
+            </div>
+            <div class="nav-item" onclick="location.href='/'">
+                <i class="fas fa-clipboard-check"></i> Assessment
+            </div>
+            <div class="nav-item" onclick="location.href='/'">
+                <i class="fas fa-route"></i> Roadmaps
+            </div>
+            <div class="nav-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Welcome, <%= user.username %>!</h1>
+                <p>Email: <%= user.email %> | Grade: <%= user.grade %> | Role: <%= user.role %></p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-eye" style="color: #3498db;"></i>
+                    <h3><%= stats.totalViews || 0 %></h3>
+                    <p>Profile Views</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clipboard-check" style="color: #2ecc71;"></i>
+                    <h3><%= stats.assessmentsTaken || 0 %></h3>
+                    <p>Assessments Taken</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bookmark" style="color: #f39c12;"></i>
+                    <h3><%= stats.savedCareers || 0 %></h3>
+                    <p>Saved Careers</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar" style="color: #9b59b6;"></i>
+                    <h3><%= stats.daysSinceJoined || 0 %></h3>
+                    <p>Days Since Joined</p>
+                </div>
+            </div>
+
+            <div class="assessment-section" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <h2><i class="fas fa-brain"></i> Career Assessment</h2>
+                <p>Discover your ideal career path with our AI-powered assessment</p>
+                <button id="takeAssessmentBtn" class="btn btn-primary" style="background: #3498db; color: white; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                    <i class="fas fa-clipboard-check"></i> Take Your Assessment
+                </button>
+                <div id="assessmentResults" style="display: none; margin-top: 20px;"></div>
+            </div>
+
+            <div class="recent-activity">
+                <h2><i class="fas fa-clock"></i> Recent Activity</h2>
+                <% if (recentActivities && recentActivities.length > 0) { %>
+                    <% recentActivities.forEach(activity => { %>
+                        <div class="activity-item">
+                            <strong><%= activity.type %></strong> - <%= activity.description %>
+                            <small style="float: right; color: #666;"><%= new Date(activity.date).toLocaleDateString() %></small>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="activity-item">
+                        <p>No recent activities. Start exploring careers and taking assessments!</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', async function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/dashboard-data', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboard(data);
+                } else {
+                    localStorage.removeItem('token');
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                localStorage.removeItem('token');
+                window.location.href = '/';
+            }
+        });
+        
+        function updateDashboard(data) {
+            document.querySelector('.header h1').textContent = `Welcome, ${data.user.username}!`;
+            document.querySelector('.header p').textContent = `Email: ${data.user.email} | Grade: ${data.user.grade} | Role: ${data.user.role}`;
+            
+            document.querySelector('.stat-card:nth-child(1) h3').textContent = data.stats.totalViews || 0;
+            document.querySelector('.stat-card:nth-child(2) h3').textContent = data.stats.assessmentsTaken || 0;
+            document.querySelector('.stat-card:nth-child(3) h3').textContent = data.stats.savedCareers || 0;
+            document.querySelector('.stat-card:nth-child(4) h3').textContent = data.stats.daysSinceJoined || 0;
+            
+            const activitiesContainer = document.querySelector('.recent-activity');
+            const activitiesHtml = data.recentActivities.length > 0 
+                ? data.recentActivities.map(activity => `
+                    <div class="activity-item">
+                        <strong>${activity.type}</strong> - ${activity.description}
+                        <small style="float: right; color: #666;">${new Date(activity.date).toLocaleDateString()}</small>
+                    </div>
+                `).join('')
+                : '<div class="activity-item"><p>No recent activities. Start exploring careers and taking assessments!</p></div>';
+            
+            activitiesContainer.innerHTML = `<h2><i class="fas fa-clock"></i> Recent Activity</h2>${activitiesHtml}`;
+        }
+        
+        function navigateWithToken(url) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+            window.location.href = url;
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+        
+        // Assessment functionality
+        document.getElementById('takeAssessmentBtn').addEventListener('click', function() {
+            // Set flag to return to dashboard after assessment
+            localStorage.setItem('returnToDashboard', 'true');
+            // Redirect to main page assessment section
+            window.location.href = '/#assessment';
+        });
+        
+        // Load and display saved assessment results
+        loadSavedAssessmentResults();
+        
+        function loadSavedAssessmentResults() {
+            const savedResults = localStorage.getItem('lastAssessmentResult');
+            if (savedResults) {
+                try {
+                    const result = JSON.parse(savedResults);
+                    displayAssessmentResults(result);
+                } catch (error) {
+                    console.error('Error loading saved results:', error);
+                }
+            }
+        }
+        
+        function displayAssessmentResults(result) {
+            const colleges = getCollegesForCourse(result.recommended_course);
+            const careerMapping = getCourseMapping(result.recommended_course);
+            
+            document.getElementById('assessmentResults').innerHTML = `
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #3498db;">
+                    <h3 style="color: #2c3e50; margin-bottom: 15px;">🎯 Your Latest Assessment Results</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Recommended Course:</strong> ${result.recommended_course}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Confidence Score:</strong> ${result.confidence}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Focus Subjects:</strong> ${careerMapping.subjects.join(', ')}
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <strong>Ideal Career Paths:</strong> ${careerMapping.careers.join(', ')}
+                    </div>
+                    
+                    <div>
+                        <strong>Recommended Colleges:</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            ${colleges.map(college => `
+                                <li style="margin-bottom: 5px;">
+                                    <strong>${college.name}</strong> - ${college.location} (NIRF Rank: ${college.rank})
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                        Last updated: ${new Date(result.timestamp).toLocaleString()}
+                    </div>
+                </div>
+            `;
+            document.getElementById('assessmentResults').style.display = 'block';
+        }
+        
+        function getCourseMapping(course) {
+            const mappings = {
+                'Software Engineering': {
+                    subjects: ['Computer Science', 'Mathematics', 'Programming', 'Algorithms'],
+                    careers: ['Software Developer', 'System Architect', 'Tech Lead', 'Product Manager']
+                },
+                'Medical': {
+                    subjects: ['Biology', 'Chemistry', 'Physics', 'Anatomy'],
+                    careers: ['Doctor', 'Surgeon', 'Medical Researcher', 'Healthcare Administrator']
+                },
+                'Business Management': {
+                    subjects: ['Business Studies', 'Economics', 'Finance', 'Marketing'],
+                    careers: ['Business Manager', 'Entrepreneur', 'Consultant', 'Financial Analyst']
+                },
+                'Political Science': {
+                    subjects: ['Political Science', 'History', 'Sociology', 'Public Administration'],
+                    careers: ['Civil Servant', 'Policy Analyst', 'Diplomat', 'Social Worker']
+                }
+            };
+            return mappings[course] || mappings['Software Engineering'];
+        }
+        
+        function getCollegesForCourse(course) {
+            const collegeData = {
+                'Software Engineering': [
+                    {name: 'IIT Jammu', location: 'Jammu', rank: 62},
+                    {name: 'NIT Srinagar', location: 'Srinagar', rank: 95},
+                    {name: 'University of Jammu', location: 'Jammu', rank: 151}
+                ],
+                'Medical': [
+                    {name: 'University of Kashmir', location: 'Srinagar', rank: 120},
+                    {name: 'Central University of Kashmir', location: 'Ganderbal', rank: 190},
+                    {name: 'Cluster University of Srinagar', location: 'Srinagar', rank: 240}
+                ],
+                'Business Management': [
+                    {name: 'University of Jammu', location: 'Jammu', rank: 151},
+                    {name: 'SMVDU Katra', location: 'Katra', rank: 150},
+                    {name: 'Central University of Jammu', location: 'Jammu', rank: 200}
+                ],
+                'Political Science': [
+                    {name: 'University of Kashmir', location: 'Srinagar', rank: 120},
+                    {name: 'Central University of Jammu', location: 'Jammu', rank: 200},
+                    {name: 'Baba Ghulam Shah Badshah University', location: 'Rajouri', rank: 220}
+                ]
+            };
+            return collegeData[course] || collegeData['Software Engineering'];
+        }
+    </script>
+</body>
+</html>

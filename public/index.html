@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ml_styles.css">
+    <link rel="stylesheet" href="career_results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="main-content">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Guide&nbsp;&nbsp;</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#careers" class="nav-link">Careers</a>
+                <a href="#colleges" class="nav-link">Engineer's Path</a>
+                <a href="#assessment" class="nav-link">Assessment</a>
+                <!-- <a href="#blogs" class="nav-link">Blogs</a> -->
+                <!-- <a href="#resources" class="nav-link">Resources</a> -->
+                <a href="#roadmap" class="nav-link">Roadmap</a>
+                <a href="benifits.html" class="nav-link">Perks</a>
+                <a href="#contact" class="nav-link">Contact&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                <button class="auth-btn" id="loginBtn">Login</button>
+                <button class="auth-btn" id="registerBtn">Register</button>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Carousel Section -->
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <div class="carousel-slide active" style="background-image: url('/images/slide1.jpeg'); color: white;">
+                <div class="carousel-content">
+                    <h1>Discover Your Perfect Career Path</h1>
+                    <p>Get personalized career guidance for students after 10th and 12th standard.</p>
+                    <button class="carousel-btn" onclick="scrollToSection('careers')">Explore Careers</button>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background-image: url('/images/slide2.jpg')">
+                <div class="carousel-content">
+                    <h1>Get Started</h1>
+                    <p>Explore opportunities, understand requirements, and make informed decisions about your future.</p>
+                    <button class="carousel-btn" onclick="scrollToSection('assessment')">Start Now</button>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background-image: url('/images/slide3.jpg')">
+                <div class="carousel-content">
+                    <h1>Launch Your Career</h1>
+                    <p>Empowering students with the right guidance for a successful tomorrow.</p>
+                    <button class="carousel-btn" onclick="openAuthModal('register')">Join Us</button>
+                </div>
+            </div>
+            <button class="carousel-nav prev" onclick="changeSlide(-1)">‹</button>
+            <button class="carousel-nav next" onclick="changeSlide(1)">›</button>
+            <div class="carousel-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <!-- <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Discover Your Perfect Career Path</h1>
+                <p class="hero-subtitle">Get personalized career guidance for students after 10th and 12th standard. Explore opportunities, understand requirements, and make informed decisions about your future.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToSection('careers')">Explore Careers</button>
+                    <button class="btn btn-secondary" id="getStartedBtn">Get Started</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Launch Your Career</h3>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Education Level Selection -->
+    <section class="education-levels">
+        <div class="container">
+            <h2>Choose Your Education Level</h2>
+            <div class="level-cards">
+                <div class="level-card" onclick="selectLevel('10th')">
+                    <div class="level-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>After 10th Standard</h3>
+                    <p>Explore vocational courses, ITI, Polytechnic, and diploma programs</p>
+                    <ul>
+                        <li>ITI Courses</li>
+                        <li>Polytechnic</li>
+                        <li>Diploma Programs</li>
+                        <li>Vocational Training</li>
+                    </ul>
+                </div>
+                <div class="level-card" onclick="selectLevel('12th')">
+                    <div class="level-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3>After 12th Standard</h3>
+                    <p>Discover degree programs, professional courses, and higher education options</p>
+                    <ul>
+                        <li>Engineering</li>
+                        <li>Medical</li>
+                        <li>Commerce</li>
+                        <li>Arts & Humanities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section id="careers" class="careers">
+        <div class="container">
+            <h2>Career Options</h2>
+            
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="careerSearch" placeholder="Search careers by name, skills, or subjects...">
+                </div>
+                <div class="career-filters">
+                    <button class="filter-btn active" data-level="all">All Careers</button>
+                    <button class="filter-btn" data-level="10th">After 10th</button>
+                    <button class="filter-btn" data-level="12th">After 12th</button>
+                </div>
+            </div>
+            
+            <!-- Career Comparison Section -->
+            <div class="comparison-section" id="comparisonSection" style="display: none;">
+                <h3>Career Comparison</h3>
+                <div class="comparison-grid" id="comparisonGrid">
+                    <!-- Comparison cards will be added here -->
+                </div>
+                <button class="btn btn-secondary" onclick="clearComparison()">
+                    <i class="fas fa-times"></i> Clear Comparison
+                </button>
+            </div>
+            
+            <div class="careers-grid" id="careersGrid">
+                <!-- Careers will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Colleges Section -->
+    <section id="colleges" class="colleges">
+        <div class="container">
+            <h2>Top Engineering Colleges</h2>
+            <p class="section-subtitle">Explore the best engineering colleges in Mumbai and Pune regions with detailed information about MHT-CET cutoffs, placements, and admission processes.</p>
+            
+            <!-- College Filters -->
+            <div class="college-filters">
+                <div class="filter-group">
+                    <label>Region:</label>
+                    <button class="college-filter-btn active" data-region="all">All Regions</button>
+                    <button class="college-filter-btn" data-region="Mumbai">Mumbai</button>
+                    <button class="college-filter-btn" data-region="Navi Mumbai">Navi Mumbai</button>
+                    <button class="college-filter-btn" data-region="Pune">Pune</button>
+                </div>
+                <div class="filter-group">
+                    <label>Type:</label>
+                    <button class="college-filter-btn active" data-type="all">All Types</button>
+                    <button class="college-filter-btn" data-type="Government">Government</button>
+                    <button class="college-filter-btn" data-type="Private">Private</button>
+                    <button class="college-filter-btn" data-type="Autonomous">Autonomous</button>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="collegeSearch" placeholder="Search colleges by name...">
+                </div>
+            </div>
+            
+            <div class="colleges-grid" id="collegesGrid">
+                <!-- Colleges will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- College Detail Modal -->
+    <div id="collegeModal" class="modal">
+        <div class="modal-content college-modal-content">
+            <span class="close">&times;</span>
+            <div id="collegeDetailContent">
+                <!-- College details will be loaded here -->
+                 
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Our Career Guidance?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Comprehensive Research</h3>
+                    <p>Detailed information about various career paths, requirements, and opportunities</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Personalized Guidance</h3>
+                    <p>Get recommendations based on your interests, skills, and educational background</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Career Trends</h3>
+                    <p>Stay updated with current market trends and future job prospects</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Expert Support</h3>
+                    <p>Access to career counselors and industry experts for guidance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Career Guidance Portal</h2>
+                    <p>We are dedicated to helping students make informed decisions about their career paths. Our comprehensive platform provides detailed information about various career options available after 10th and 12th standard.</p>
+                    <p>Our mission is to bridge the gap between education and career by providing accurate, up-to-date information about different professions, their requirements, and future prospects.</p>
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>50+</h3>
+                            <p>Career Options</p>
+                        </div>
+                        <div class="stat">
+                            <h3>1000+</h3>
+                            <p>Students Helped</p>
+                        </div>
+                        <div class="stat">
+                            <h3>95%</h3>
+                            <p>Satisfaction Rate</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-info-block">
+                        <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@careerguide.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-block">
+                        <div class="contact-info-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>8693049439</p>
+                        </div>
+                    </div>
+                    <div class="contact-info-block">
+                        <div class="contact-info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h3>Address</h3>
+                            <p>Srinagr , Jammu</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Roadmap Section -->
+    <section id="roadmap" class="roadmap">
+        <div class="container">
+            <h2>Career Roadmap Generator</h2>
+            <p class="section-subtitle">Get a personalized step-by-step roadmap to achieve your career goals. Tell us where you are and where you want to be!</p>
+            
+            <!-- Roadmap Generator -->
+            <div class="roadmap-generator">
+                <div class="generator-form">
+                    <div class="form-group">
+                        <label for="currentPosition">Where are you now?</label>
+                        <select id="currentPosition" class="form-control">
+                            <option value="">Select your current position</option>
+                            <option value="10th">10th Standard</option>
+                            <option value="12th">12th Standard</option>
+                            <option value="Graduation">Graduation</option>
+                            <option value="Post Graduation">Post Graduation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="careerGoal">What do you want to become?</label>
+                        <select id="careerGoal" class="form-control">
+                            <option value="">Select your career goal</option>
+                            <option value="Medical">Doctor</option>
+                            <option value="Engineering">Software Engineer</option>
+                            <option value="Law">Lawyer</option>
+                            <option value="Commerce">Chartered Accountant</option>
+                            <option value="Arts">Journalist</option>
+                            <option value="ITI">Electrician</option>
+                            <option value="Polytechnic">Diploma Engineer</option>
+                            <option value="Hotel Management">Hotel Manager</option>
+                            <option value="Design">Graphic Designer</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="generateRoadmap()">
+                        <i class="fas fa-route"></i> Generate Roadmap
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Roadmap Display -->
+            <div id="roadmapDisplay" class="roadmap-display" style="display: none;">
+                <div class="roadmap-header">
+                    <h3 id="roadmapTitle">Your Career Roadmap</h3>
+                    <div class="roadmap-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="roadmapDuration">Duration</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span id="roadmapSuccessRate">Success Rate</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-signal"></i>
+                            <span id="roadmapDifficulty">Difficulty</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span id="roadmapInvestment">Investment</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="roadmap-prerequisites">
+                    <h4><i class="fas fa-clipboard-check"></i> Prerequisites</h4>
+                    <div id="prerequisitesList" class="prerequisites-list">
+                        <!-- Prerequisites will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="roadmap-steps" id="roadmapSteps">
+                    <!-- Roadmap steps will be loaded here -->
+                </div>
+                
+                <div class="roadmap-alternatives">
+                    <h4><i class="fas fa-route"></i> Alternative Career Paths</h4>
+                    <div id="alternativesList" class="alternatives-list">
+                        <!-- Alternatives will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Assessment Section -->
+    <section id="assessment" class="assessment">
+        <div class="container">
+            <h2>Career Assessment</h2>
+            <p class="section-subtitle">Discover your perfect career path through our comprehensive assessment. Answer questions about your interests, skills, and personality to get personalized career recommendations.</p>
+            
+            <div class="assessment-container">
+                <div class="assessment-intro">
+                    <div class="intro-content">
+                        <h3>Why Take Our Career Assessment?</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Personalized career recommendations based on your unique profile</li>
+                            <li><i class="fas fa-check-circle"></i> Understand your strengths and areas for development</li>
+                            <li><i class="fas fa-check-circle"></i> Discover careers you might not have considered</li>
+                            <li><i class="fas fa-check-circle"></i> Get detailed insights about your personality type</li>
+                            <li><i class="fas fa-check-circle"></i> Receive a comprehensive career report</li>
+                        </ul>
+                        <button class="btn btn-primary" onclick="startAssessment()">
+                            <i class="fas fa-play"></i> Start Assessment
+                        </button>
+                    </div>
+                    <div class="intro-image">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                </div>
+                
+                <!-- Assessment Quiz -->
+                <div id="assessmentQuiz" class="assessment-quiz" style="display: none;">
+                    <div class="quiz-header">
+                        <h3>Career Assessment Quiz</h3>
+                        <div class="quiz-progress">
+                            <span id="currentQuestion">1</span> of <span id="totalQuestions">20</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-container">
+                        <h4 id="questionText">Question text will appear here</h4>
+                        <div id="questionOptions" class="question-options">
+                            <!-- Options will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-navigation">
+                        <button id="prevBtn" class="btn btn-secondary" onclick="previousQuestion()" disabled>
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button id="submitBtn" class="btn btn-success" onclick="submitAssessment()" style="display: none;">
+                            <i class="fas fa-check"></i> Submit Assessment
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Assessment Results -->
+                <div id="assessmentResults" class="assessment-results" style="display: none;">
+                    <div class="results-header">
+                        <h3>Your Career Assessment Results</h3>
+                        <p>Based on your responses, here are your personalized career recommendations:</p>
+                    </div>
+                    
+                    <div class="results-content">
+                        <div class="personality-summary">
+                            <h4><i class="fas fa-user"></i> Personality Summary</h4>
+                            <div id="personalitySummary" class="summary-content">
+                                <!-- Personality summary will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="career-recommendations">
+                            <h4><i class="fas fa-star"></i> Top Career Recommendations</h4>
+                            <div id="careerRecommendations" class="recommendations-grid">
+                                <!-- Career recommendations will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="skills-analysis">
+                            <h4><i class="fas fa-chart-bar"></i> Skills Analysis</h4>
+                            <div id="skillsAnalysis" class="skills-chart">
+                                <!-- Skills analysis will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <div class="action-plan">
+                            <h4><i class="fas fa-road"></i> Your Action Plan</h4>
+                            <div id="actionPlan" class="plan-steps">
+                                <!-- Action plan will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="results-actions">
+                        <button class="btn btn-primary" onclick="downloadReport()">
+                            <i class="fas fa-download"></i> Download Report
+                        </button>
+                        <button class="btn btn-secondary" onclick="retakeAssessment()">
+                            <i class="fas fa-redo"></i> Retake Assessment
+                        </button>
+                        <button class="btn btn-outline" onclick="shareResults()">
+                            <i class="fas fa-share"></i> Share Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section id="blogs" class="blogs">
+        <div class="container">
+            <h2>Career Insights & Tips</h2>
+            <p class="section-subtitle">Stay updated with the latest career trends, exam updates, study tips, and industry insights to make informed decisions about your future.</p>
+            
+            <!-- Blog Categories -->
+            <div class="blog-categories">
+                <button class="category-btn active" data-category="all">All Posts</button>
+                <button class="category-btn" data-category="career-tips">Career Tips</button>
+                <button class="category-btn" data-category="exam-updates">Exam Updates</button>
+                <button class="category-btn" data-category="study-tips">Study Tips</button>
+                <button class="category-btn" data-category="industry-news">Industry News</button>
+                <button class="category-btn" data-category="inspiration">Inspiration</button>
+            </div>
+            
+            <!-- Blog Search -->
+            <div class="blog-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="blogSearch" placeholder="Search blogs...">
+                </div>
+            </div>
+            
+            <!-- Featured Blog -->
+            <div class="featured-blog" id="featuredBlog">
+                <!-- Featured blog will be loaded here -->
+            </div>
+            
+            <!-- Blog Grid -->
+            <div class="blogs-grid" id="blogsGrid">
+                <!-- Blogs will be loaded here -->
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button id="loadMoreBtn" class="btn btn-outline" onclick="loadMoreBlogs()">
+                    <i class="fas fa-plus"></i> Load More Posts
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Detail Modal -->
+    <div id="blogModal" class="modal">
+        <div class="modal-content blog-modal-content">
+            <span class="close">&times;</span>
+            <div id="blogDetailContent">
+                <!-- Blog details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Guidance Tips Section -->
+    <section class="career-guidance">
+        <div class="container">
+            <h2>How to Choose Your Career Path</h2>
+            <p class="section-subtitle">Making the right career choice is crucial for your future. Here's a comprehensive guide to help you make an informed decision.</p>
+            
+            <div class="guidance-grid">
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>1. Self-Assessment</h3>
+                    <p>Start by understanding yourself - your interests, strengths, weaknesses, and values.</p>
+                    <ul>
+                        <li>What subjects do you enjoy studying?</li>
+                        <li>What activities make you lose track of time?</li>
+                        <li>What are your natural talents?</li>
+                        <li>What values are important to you?</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>2. Research Career Options</h3>
+                    <p>Explore different careers and understand their requirements, opportunities, and future prospects.</p>
+                    <ul>
+                        <li>Job responsibilities and daily tasks</li>
+                        <li>Required education and skills</li>
+                        <li>Salary ranges and growth potential</li>
+                        <li>Work environment and lifestyle</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>3. Seek Guidance</h3>
+                    <p>Don't hesitate to ask for help from professionals, teachers, and career counselors.</p>
+                    <ul>
+                        <li>Talk to professionals in your field of interest</li>
+                        <li>Consult career counselors</li>
+                        <li>Attend career fairs and workshops</li>
+                        <li>Join online career communities</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>4. Gain Experience</h3>
+                    <p>Try to get hands-on experience through internships, volunteering, or part-time work.</p>
+                    <ul>
+                        <li>Internships in your field of interest</li>
+                        <li>Volunteer work</li>
+                        <li>Part-time jobs</li>
+                        <li>Shadowing professionals</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3>5. Compare Options</h3>
+                    <p>Use our comparison tool to evaluate different career paths side by side.</p>
+                    <ul>
+                        <li>Compare salary expectations</li>
+                        <li>Evaluate work-life balance</li>
+                        <li>Assess growth opportunities</li>
+                        <li>Consider job security</li>
+                    </ul>
+                </div>
+                
+                <div class="guidance-card">
+                    <div class="guidance-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>6. Make a Decision</h3>
+                    <p>Based on your research and self-assessment, choose the career that best fits your goals.</p>
+                    <ul>
+                        <li>Set short-term and long-term goals</li>
+                        <li>Create an action plan</li>
+                        <li>Be flexible and open to change</li>
+                        <li>Stay committed to your choice</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="guidance-tips">
+                <h3>Important Tips for Students</h3>
+                <div class="tips-grid">
+                    <div class="tip-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <h4>Follow Your Passion</h4>
+                            <p>Choose a career that aligns with your interests and passions. You'll be more motivated and successful in a field you love.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <i class="fas fa-eye"></i>
+                        <div>
+                            <h4>Look at the Future</h4>
+                            <p>Consider the future prospects of your chosen career. Some fields are growing while others may be declining.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h4>Education Matters</h4>
+                            <p>Understand the educational requirements and be prepared for continuous learning throughout your career.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div>
+                            <h4>Financial Planning</h4>
+                            <p>Consider the financial investment required for education and training, and potential returns on that investment.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h4>Work-Life Balance</h4>
+                            <p>Think about the lifestyle you want. Some careers require long hours while others offer more flexibility.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <h4>Global Opportunities</h4>
+                            <p>Consider if your chosen career offers opportunities to work internationally or remotely.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="resources">
+        <div class="container">
+            <h2>Student Resources</h2>
+            <p class="section-subtitle">Boost your career journey with curated resources: resume templates, free courses, and interview prep guides.</p>
+            <div class="resources-grid">
+                <!-- Resume Templates -->
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>Resume Templates</h3>
+                    <p>Download modern, ATS-friendly resume templates for students and freshers.</p>
+                    <ul class="resource-links">
+                        <li><a href="https://www.canva.com/resumes/templates/" target="_blank">Canva Resume Templates</a></li>
+                        <li><a href="https://novoresume.com/resume-templates" target="_blank">Novoresume Templates</a></li>
+                        <li><a href="https://www.overleaf.com/latex/templates/tagged/resume" target="_blank">LaTeX Resume Templates</a></li>
+                        <li><a href="https://docs.google.com/document/u/0/?ftv=1&tgif=d" target="_blank">Google Docs Templates</a></li>
+                    </ul>
+                </div>
+                <!-- Free Courses -->
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Free Courses</h3>
+                    <p>Learn new skills with these top free online courses and certifications.</p>
+                    <ul class="resource-links">
+                        <li><a href="https://www.coursera.org/courses?query=free" target="_blank">Coursera Free Courses</a></li>
+                        <li><a href="https://www.edx.org/course" target="_blank">edX Free Courses</a></li>
+                        <li><a href="https://www.udemy.com/courses/free/" target="_blank">Udemy Free Courses</a></li>
+                        <li><a href="https://www.khanacademy.org/" target="_blank">Khan Academy</a></li>
+                        <li><a href="https://www.codecademy.com/catalog/all" target="_blank">Codecademy (Free Coding)</a></li>
+                    </ul>
+                </div>
+                <!-- Interview Prep -->
+                <div class="resource-card">
+                    <div class="resource-icon"><i class="fas fa-comments"></i></div>
+                    <h3>Interview Preparation</h3>
+                    <p>Get ready for your next interview with these guides and practice questions.</p>
+                    <ul class="resource-links">
+                        <li><a href="https://www.geeksforgeeks.org/hr-interview-questions-and-answers/" target="_blank">HR Interview Q&A</a></li>
+                        <li><a href="https://www.interviewbit.com/hr-interview-questions/" target="_blank">InterviewBit HR Questions</a></li>
+                        <li><a href="https://www.pramp.com/" target="_blank">Pramp (Mock Interviews)</a></li>
+                        <li><a href="https://leetcode.com/explore/interview/card/top-interview-questions-easy/" target="_blank">LeetCode Top Questions</a></li>
+                        <li><a href="https://www.linkedin.com/learning/topics/interviewing" target="_blank">LinkedIn Learning: Interviewing</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ask a Mentor Section -->
+    <section id="ask-mentor" class="ask-mentor">
+        <div class="container">
+            <h2>Ask a Mentor</h2>
+            <p class="section-subtitle">Have a question about careers, courses, or interviews? Ask our mentors!</p>
+            <div id="askMentorFormContainer">
+                <form id="askMentorForm" style="display:none;">
+                    <textarea id="mentorQuestionInput" placeholder="Type your question..." required></textarea>
+                    <button type="submit" class="btn btn-primary">Ask</button>
+                </form>
+                <div id="askMentorLoginPrompt" style="display:none;">
+                    <p><strong>Login as a student to ask a question.</strong></p>
+                </div>
+            </div>
+            <div class="mentor-questions-list" id="mentorQuestionsList">
+                <!-- Q&A will be loaded here -->
+            </div>
+        </div>
+    </section>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Career Guidance</h3>
+                    <p>Your trusted partner in making informed career decisions. We provide comprehensive guidance for students at every stage of their educational journey.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/swap_nil_45" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#colleges">Colleges</a></li>
+                        <li><a href="#roadmap">Roadmap</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Career Categories</h4>
+                    <ul>
+                        <li><a href="#careers">Engineering</a></li>
+                        <li><a href="#careers">Medical</a></li>
+                        <li><a href="#careers">Commerce</a></li>
+                        <li><a href="#careers">Arts</a></li>
+                        <li><a href="#careers">ITI</a></li>
+                        <li><a href="#careers">Polytechnic</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Vashi, Maharashtra</p>
+                        <p><i class="fas fa-phone"></i> 8693049439</p>
+                        <p><i class="fas fa-envelope"></i> info@careerguidance.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="developer-info" style="margin-bottom:10px;">
+                    <strong>Meet the Developer: Nitish Kumar</strong><br>
+                    <span>Instagram: <a href="https://instagram.com/swap_nil_45" target="_blank">nitish</a> | </span>
+                    <span>Email: <a href="mailto:swapnilraskar321@gmail.com">swapnilraskar321@gmail.com</a> | </span>
+                    <span>Twitter: <a href="https://twitter.com/swappyr45" target="_blank">@swappyr45</a></span>
+                </div>
+                <p>&copy; 2024 Career Guidance. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Login/Register -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <h2>Welcome Back</h2>
+                    <div class="form-group">
+                        <input type="email" id="loginEmail" name="email" placeholder="Email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="loginPassword" name="password" placeholder="Password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <h2>Create Account</h2>
+                    <div class="form-group">
+                        <input type="text" id="registerUsername" name="username" placeholder="Username" required autocomplete="username" minlength="3">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="registerEmail" name="email" placeholder="Email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="registerPassword" name="password" placeholder="Password" required autocomplete="new-password" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <select id="registerGrade" name="grade" required>
+                            <option value="">Select Grade</option>
+                            <option value="10th">10th Standard</option>
+                            <option value="12th">12th Standard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="registerInterests" name="interests" placeholder="Interests (comma separated)" autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Detail Modal -->
+    <div id="careerModal" class="modal">
+        <div class="modal-content career-modal">
+            <span class="close">&times;</span>
+            <div id="careerDetailContent">
+                <!-- Career details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Guidance Chatbot -->
+    <div id="chatbotWidget" class="chatbot-widget">
+      <button id="openChatbotBtn" class="chatbot-fab"><i class="fas fa-comments"></i></button>
+      <div id="chatbotWindow" class="chatbot-window" style="display:none;">
+        <div class="chatbot-header">
+          <span>Career Guidance Chatbot</span>
+          <button id="closeChatbotBtn" class="chatbot-close">&times;</button>
+        </div>
+        <div id="chatbotMessages" class="chatbot-messages"></div>
+        <form id="chatbotForm" class="chatbot-form">
+          <input type="text" id="chatbotInput" placeholder="Ask me anything about your career..." autocomplete="off" required />
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
